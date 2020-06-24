@@ -1,0 +1,65 @@
+td:last-child, th:last-child { text-align:center }
+
+grid i {
+  font-size: 120px;
+  text-align: center
+}
+
+grid.status {
+  text-align: center;
+} 
+
+grid i {
+  color: #5a6987; 
+}
+
+.error {
+  color: #d8000c;
+}
+
+.success {
+  color: #4f8a10;
+}
+
+.data-row {
+  cursor: pointer;
+}
+
+.log-row {
+  display: none;
+}
+
+.log-row td {
+  text-align:left;
+  background-color: #000000;
+}
+
+.log-row pre {
+  color: #fff; 
+}
+
+.fas.fa-play, .far.fa-thumbs-up {
+  color: #4f8a10;
+} 
+
+.fas.fa-stop, .far.fa-thumbs-down {
+  color: #d8000c;
+} 
+
+message {
+  border: 1px solid;
+  border-radius:2px;
+  margin: 10px 0 20px;
+  padding: 15px 20px;
+  display: block;
+}
+
+message[error] {
+  color: #d8000c;
+  background: #ffbaba;
+}
+
+message[success] {
+  color: #4f8a10;
+  background: #dff2bf;
+}

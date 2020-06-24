@@ -1,0 +1,44 @@
+version: '3.0'
+
+services:
+  gitea:
+    image: 'gitea/gitea:1.11.3'
+    hostname: 'gitea.example.com'
+    volumes:
+    - 'gitea_data:/data'
+    networks:
+      interna:
+        ipv4_address: '192.168.1.10'
+  jenkins:
+    hostname: 'jenkins.example.com'
+    image: 'jenkins/jenkins:lts-alpine'
+    volumes:
+    - 'jenkins:/var/jenkins_home'
+    networks:
+      interna:
+        ipv4_address: '192.168.1.20'
+  ldap:
+    image: osixia/openldap:stable-amd64
+    hostname: 'example.com'
+    environment:
+      LDAP_DOMAIN: 'example.com'
+      LDAP_ADMIN_PASSWORD: '4linux'
+    volumes:
+    - 'ldap_data:/var/lib/ldap'
+    - 'ldap_conf:/etc/ldap/slapd.d'
+    networks:
+      interna:
+        ipv4_address: '192.168.1.30'
+
+volumes:
+  gitea_data: {}
+  jenkins: {}
+  ldap_data: {}
+  ldap_conf: {}
+
+networks:
+  interna:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: '192.168.1.0/24'

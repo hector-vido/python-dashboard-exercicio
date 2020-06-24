@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block main %}
+<form method="POST" action="/login">
+  {% with messages = get_flashed_messages(category_filter=['error']) %}
+    {% for m in messages %}
+      <message error>{{ m }}</message>
+    {% endfor %}
+  {% endwith %}
+	<label>Usuário</label>
+	<input placeholder="ID ou E-mail" type="text" name="usuario" value="{{ session.usuario }}">
+	
+	<label>Senha</label>
+	<input placeholder="Senha" type="password" name="senha">
+
+	<button primary m-full>Entrar</button>
+</form>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Gitea - Usuário{% endblock %}
+{% block menu %}
+  {% include 'menu.html' %}
+{% endblock %}
+{% from "helpers/_formhelpers.html" import render_field %}
+{% block main %}
+  {% with messages = get_flashed_messages(category_filter=['error']) %}
+    {% for m in messages %}
+      <message error>{{ m|safe }}</message>
+    {% endfor %}
+  {% endwith %}
+  <h1><b>Gitea - Usuário</b></h1>
+  <section>
+    <form method="POST">
+      {{ render_field(form.username) }}
+      {{ render_field(form.full_name) }}
+      {{ render_field(form.email) }}
+      {{ render_field(form.password) }}
+      {{ render_field(form.confirm) }}
+      {{ render_field(form.is_admin) }}
+      {% if form.must_change_password %}
+        <br>
+        {{ render_field(form.must_change_password) }}
+      {% endif %}
+      <div>
+        <br>
+        <button primary m-full>Enviar</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}

@@ -1,0 +1,61 @@
+<!-- extender de base.html -->
+<!-- definir título como Gitea -->
+<!-- incluir o menu.html -->
+<!-- definir bloco main -->
+<h1><b>Gitea</b></h1>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for c, m in messages %}
+    <message {{ c }}>{{ m|safe }}</message>
+  {% endfor %}
+{% endwith %}
+<table>
+	<caption><h2>Usuários</h2></caption>
+	<tr>
+		<th>Nome</th>
+		<th>E-mail</th>
+		<th>Último Acesso</th>
+		<th>Admin</th>
+		<th>Ações</th>
+	</tr>
+	<!-- para cada u em users -->
+	<tr>
+		<td>{{u.login}}</td>
+		<td>{{u.email}}</td>
+		<td>{{u.last_login if u.last_login != '01/01/1970' else 'Nunca acessou'}}</td>
+		<td>{{'Sim' if u.is_admin else 'Não'}}</td>
+    <td class="actions">
+      <!-- ajustar para os endpoints já definidos no blueprint gitea -->
+      <a href="/endpoint/usuario/nomeusuario" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+      <a href="/endpoint/usuario/remover/nomeusuario" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+    </td>
+	</tr>
+	<!-- end for -->
+  <!-- se nenhum usuário for encontrado -->
+  <tr>
+    <td colspan="5">Nenhum usuário encontrado</td>
+  </tr>
+  <!-- fim do if -->
+</table>
+<table>
+	<caption><h2>Projetos</h2></caption>
+	<tr>
+		<th>Nome</th>
+		<th>HTTP</th>
+		<th>Issues</th>
+		<th>Tamanho</th>
+	</tr>
+  <!-- para cada r em repos -->
+	<tr>
+		<td>nome</td>
+		<td>url para clonar</td>
+		<td>Sim se há issues, caso contrário não</td>
+		<td>Tamanho em KB</td>
+	</tr>
+	<!-- fim do for -->
+  {% if not repos %}
+  <tr>
+    <td colspan="4">Nenhum repositório encontrado</td>
+  </tr>
+  {% endif %}
+</table>
+<!-- fim do bloco -->

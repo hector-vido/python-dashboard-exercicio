@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Gitea - Remover Usuário{% endblock %}
+{% block menu %}
+  {% include 'menu.html' %}
+{% endblock %}
+{% block main %}
+  <h1><b>Gitea - Remover Usuário</b></h1>
+  <section>
+    <form method="post" action="/gitea/usuario/remover/{{ username }}">
+      <div>
+        <p>Deseja realmente remover o usuario <b>{{ username }}</b>?</p>
+        <a href="/gitea"><button primary m-full type="button">Cancelar</button></a>
+        <button primary m-full>Remover</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}

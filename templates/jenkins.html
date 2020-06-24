@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+<!-- o titulo é "Jenkins" -->
+{% block menu %}{% include 'menu.html' %}{% endblock %}
+{% block main %}
+<h1><b>Jenkins</b></h1>
+<table>
+	<tr>
+		<th>Nome</th>
+		<th>Status</th>
+		<th>Ações</th>
+	</tr>
+	<!-- para cada j in job -->
+	<tr class="data-row">
+		<td><a href="{{ j.url }}">{{j.name}}</a></td>
+		<td>
+			{% if j.color == 'COR' %}
+			<i class="far fa-thumbs-up" title="Sucesso!"></i>
+			<!-- Se "anime" estiver em cor <i class="fas fa-hourglass-half" style="color: #ff7f00" title="Executando..."></i> -->
+			<!-- Se cor for igual a "aborted" <i class="fas fa-ban" title="Abortado"></i> -->
+			{% else %}
+			<i class="far fa-thumbs-down" title="Erro!"></i>
+			{% endif %}
+		</td>
+		<td class="actions">
+			<a href="/jenkins/build/{{j.name}}"><i class="fas fa-play"></i></a>
+      {% if j.info.builds|length %}
+			<a href="/jenkins/stop/{{j.name}}/{{ j.info.builds[0].number }}"><i class="fas fa-stop"></i></a>
+      {% endif %}
+		</td>
+	</tr>
+  <tr class="log-row">
+    <td colspan="3">
+      <pre>{{ j.info.logs }}</pre>
+    </td>
+  </tr>
+  <!-- fim do for -->
+  <!-- se não existirem jobs -->
+  <tr>
+    <td colspan="3">Nenhum job encontrado</td>
+  </tr>
+  <!-- fim do if -->
+</table>
+{% endblock %}

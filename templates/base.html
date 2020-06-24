@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Integração - {% block title %}{% endblock %}</title>
+		<meta charset="UTF-8">
+    <script src="/static/script.js"></script>
+		<link rel="icon" type="image/png" href="/static/favicon.png">
+		<link rel="stylesheet" type="text/css" href="/static/style.css">
+		<link rel="stylesheet" type="text/css" href="/static/bare.min.css">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+    </head>
+    <body>
+		<nav>
+			<label>
+				<header>
+					<a href="/">Flask</a>
+				</header>
+        {% block menu %}{% endblock %}
+			</label>
+		</nav>
+		<section>
+			{% block main %}
+			{% endblock %}
+		</section>
+    </body>
+</html>

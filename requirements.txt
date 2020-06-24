@@ -1,0 +1,6 @@
+docker
+flask
+flask-wtf
+ldap3
+python-dotenv
+requests

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block menu %}
+  {% include 'menu.html' %}
+{% endblock %}
+{% block title %}Home{% endblock %}
+{% block main %}
+<section>
+	<h1><b>Status</b></h1>
+  <h3>Status geral de cada serviço:</h3>
+  <br>
+	<grid class="status">
+		<div col="1/4">
+      <i class="fab fa-docker"></i>
+      <message {{ health.docker.class }}>{{ health.docker.message }}</message>
+		</div>
+		<div col="1/4">
+      <i class="fab fa-git-square"></i>
+      <message {{ health.gitea.class }}>{{ health.gitea.message }}</message>
+		</div>
+		<div col="1/4">
+      <i class="fab fa-jenkins"></i>
+      <message {{ health.jenkins.class }}>{{ health.jenkins.message }}</message>
+		</div>
+		<div col="1/4">
+      <i class="fas fa-folder-open"></i>
+      <message {{ health.openldap.class }}>{{ health.openldap.message }}</message>
+		</div>
+	</grid>
+</section>
+{% endblock %}

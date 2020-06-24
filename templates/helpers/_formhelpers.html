@@ -1,0 +1,16 @@
+{% macro render_field(field) %}
+  {% if field.type != 'BooleanField' %}
+    <b>{{ field.label }}</b>
+    {{ field(**kwargs)|safe }}
+  {% else %}
+    {{ field(**kwargs)|safe }}
+    {{ field.label }}
+  {% endif %}
+  {% if field.errors %}
+    <message error>
+      {% for error in field.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </message>
+  {% endif %}
+{% endmacro %}
