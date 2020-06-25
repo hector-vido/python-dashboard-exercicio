@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Docker{% endblock %}
+{% block menu %}
+  {% include 'menu.html' %}
+{% endblock %}
+{% block main %}
+<h1><b>Docker</b></h1>
+<table>
+	<caption>Contêineres</caption>
+	<tr>
+		<th>ID</th>
+		<th>Imagem</th>
+		<th>Nome</th>
+		<th>Status</th>
+		<th>Ações</th>
+	</tr>
+	{% for c in conteineres %}
+	<tr class="data-row">
+		<td>{{c.short_id}}</td>
+		<td>{{c.image}}</td>
+		<td>{{c.name}}</td>
+		<td>{{c.status}}</td>
+		<td class="actions">
+			<a href="/docker/start/{{c.short_id}}"><i class="fas fa-play"></i></a>
+			<a href="/docker/stop/{{c.short_id}}"><i class="fas fa-stop"></i></a>
+		</td>
+	</tr>
+  <tr class="log-row">
+    <td colspan="5">
+      <pre>Consegue implementar os logs?</pre>
+    </td>
+  </tr>
+	{% endfor %}
+  {% if not conteineres %}
+  <tr>
+    <td colspan="5">Nenhum contêiner encontrado</td>
+  </tr>
+  {% endif %}
+</table>
+{% endblock %}

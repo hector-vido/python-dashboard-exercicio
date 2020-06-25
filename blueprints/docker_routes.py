@@ -4,28 +4,35 @@ import docker
 from config import login_required
 from flask import Blueprint, render_template, redirect
 
-docker_routes = Blueprint('docker_routes', __name__)
+# definir blueprint na variavel docker_routes e chamá-lo de docker_rotes
 
-client = docker.DockerClient(base_url='unix://var/run/docker.sock')
+# utilizar um dos métodos do módulo "docker" para se conectar ao docker
+# unix socket ou tcp
+# atribuindo-o a variável "client"
+client = None
 
 @docker_routes.route('/docker')
-@login_required
+# adicionar decorator para verificar autenticação
 def get_docker():
   conteineres = []
   for c in client.containers.list(all=True):
-    conteineres.append({'short_id' : c.short_id, 'name' : c.name, 'image' : c.image.tags[0], 'status' : c.status})
-  return render_template('docker.html', conteineres=conteineres)
+    # adicionar o dicionário dentro da lsita "conteineres"
+    #{'short_id' : c.short_id, 'name' : c.name, 'image' : c.image.tags[0], 'status' : c.status}
+  # enviar os contêineres para render_template
+  return render_template('docker.html', var=outravar)
 
 @docker_routes.route('/docker/start/<cid>')
-@login_required
+# adicionar decorator para verificar autenticação
 def start_container(cid):
-  c = client.containers.get(cid)
-  c.start()
-  return redirect('/docker')
+  # procurar o contêiner pelo id, e atribuí-lo a variável "c"
+  c = None
+  # iniciar o contêiner
+  # redirecionar para /docker
 
 @docker_routes.route('/docker/stop/<cid>')
-@login_required
+# adicionar decorator para verificar autenticação
 def stop_container(cid):
-  c = client.containers.get(cid)
-  c.stop()
-  return redirect('/docker')
+  # procurar o contêiner pelo id, e atribuí-lo a variável "c"
+  c = None
+  # parar o contêiner
+  # redirecionar para /docker

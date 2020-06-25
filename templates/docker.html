@@ -1,9 +1,7 @@
-{% extends 'base.html' %}
-{% block title %}Docker{% endblock %}
-{% block menu %}
-  {% include 'menu.html' %}
-{% endblock %}
-{% block main %}
+<!-- extender base.html -->
+<!-- definir título como Docker -->
+<!-- incluir o menu.html -->
+<!-- criar o bloco "main" -->
 <h1><b>Docker</b></h1>
 <table>
 	<caption>Contêineres</caption>
@@ -14,15 +12,15 @@
 		<th>Status</th>
 		<th>Ações</th>
 	</tr>
-	{% for c in conteineres %}
+  <!-- para cada c em conteineres -->
 	<tr class="data-row">
-		<td>{{c.short_id}}</td>
-		<td>{{c.image}}</td>
-		<td>{{c.name}}</td>
-		<td>{{c.status}}</td>
+		<td>id curto</td>
+		<td>imagem</td>
+		<td>nome</td>
+		<td>status</td>
 		<td class="actions">
-			<a href="/docker/start/{{c.short_id}}"><i class="fas fa-play"></i></a>
-			<a href="/docker/stop/{{c.short_id}}"><i class="fas fa-stop"></i></a>
+			<a href="endpoint/idcontainer"><i class="fas fa-play"></i></a>
+			<a href="endpoint/idcontainer"><i class="fas fa-stop"></i></a>
 		</td>
 	</tr>
   <tr class="log-row">
@@ -30,11 +28,10 @@
       <pre>Consegue implementar os logs?</pre>
     </td>
   </tr>
-	{% endfor %}
-  {% if not conteineres %}
+	<!-- fim do for -->
+  <!-- se não há conteineres -->
   <tr>
     <td colspan="5">Nenhum contêiner encontrado</td>
   </tr>
-  {% endif %}
+  <!-- fim do if -->
 </table>
-{% endblock %}
