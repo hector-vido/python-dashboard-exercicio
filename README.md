@@ -35,7 +35,7 @@ As dependências do **python** são as seguintes:
 - python-dotenv
 - requests
 
-# Criar Usuário
+## Criar Usuário
 
 Existem várias formas de adicionar um usuário ao OpenLDAP, abaixo há um pequeno script que cria o grupo e o usuário utilizado para se logar ao painel:
 
