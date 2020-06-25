@@ -1,7 +1,9 @@
-<!-- extender base.html -->
-<!-- definir título como Home -->
-<!-- incluir o menu.html -->
-<!-- criar o bloco "main" -->
+{% extends 'base.html' %}
+{% block menu %}
+  {% include 'menu.html' %}
+{% endblock %}
+{% block title %}Home{% endblock %}
+{% block main %}
 <section>
 	<h1><b>Status</b></h1>
   <h3>Status geral de cada serviço:</h3>
@@ -25,3 +27,4 @@
 		</div>
 	</grid>
 </section>
+{% endblock %}

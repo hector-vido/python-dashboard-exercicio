@@ -2,26 +2,21 @@
 
 import requests
 from os import environ
-from ldap3 import Server, Connection
-from flask import Flask, flash, redirect, render_template, request, session
 
-from config import health_check, login_required
-from blueprints.docker_routes import docker_routes
-from blueprints.gitea_routes import gitea_routes
-from blueprints.jenkins_routes import jenkins_routes
+# importar de config health_check e login_required
+# importar blueprints
 
-app = Flask(__name__)
-app.secret_key = 'TqMYB8^wbe!%cTcx3UbV!qUsZ2*#*XK6B3ZFj*zK'
+# insanciar Flask na variável app
+# criar secret_key, pode ir ao duckduckgo.com e procurar por "password strong 32"
 app.url_map.strict_slashes = False
-app.register_blueprint(docker_routes)
-app.register_blueprint(gitea_routes)
-app.register_blueprint(jenkins_routes)
+# registrar blueprints
 
 @app.route('/')
-@login_required
+# adicionar o decorator login_required de config.py, terá que criá-lo
 def index():
-  health = health_check() 
-  return render_template('index.html', health=health)
+  #health = health_check()
+  #renderizar "index.html", enviando uma variável chamada health com o valor de health logo acima
+  return 'Parece funcionar...' # remover
 
 @app.route('/login')
 def get_login():
@@ -29,26 +24,24 @@ def get_login():
 
 @app.route('/login', methods=['POST'])
 def post_login():
-  usuario = request.form['usuario'] or ' '
-  senha = request.form['senha'] or ' '
+  # dados enviados por formulários ficam em request.form['nome']
+  # popular as variáveis "usuario" e "senha" com os valores do formulário
 
   try:
-    server = Server(environ['LDAP_HOST'], use_ssl=False)
-    ldap = Connection(server, user='uid={},ou=users,dc=example,dc=com'.format(usuario), password=senha)
-    if ldap.bind():
-      session['auth'] = True
+    # conectar-se ao OpenLDAP
+    if ldap.bind(): # se o bind funcionar, usuário se autenticou
+      session['auth'] = True # cria um indicador de que usuário se autenticou
       return redirect('/')
     else:
-      flash('Usuário ou senha inválidos', 'error')        
+      # criar flash message do tipo "error" com a mensagem "Usuário ou senha inválidos"
       return redirect('/login')
   except Exception as e:
     print(e)
-    raise e    
+    raise e
 
 @app.route('/logoff')
-@login_required
 def logoff():
-  del session['auth']
+  del session['auth'] # remove o indicador, deslogando o usuário
   return redirect('/')
 
 @app.errorhandler(404)

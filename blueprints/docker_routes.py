@@ -16,12 +16,13 @@ client = None
 def get_docker():
   conteineres = []
   for c in client.containers.list(all=True):
+    pass
     # adicionar o dicionário dentro da lsita "conteineres"
     #{'short_id' : c.short_id, 'name' : c.name, 'image' : c.image.tags[0], 'status' : c.status}
   # enviar os contêineres para render_template
   return render_template('docker.html', var=outravar)
 
-@docker_routes.route('/docker/start/<cid>')
+# criar a rota para iniciar os contêineres, ela deve receber o parâmetro "cid"
 # adicionar decorator para verificar autenticação
 def start_container(cid):
   # procurar o contêiner pelo id, e atribuí-lo a variável "c"

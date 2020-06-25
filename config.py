@@ -3,23 +3,17 @@
 import requests, docker
 from os import environ
 from functools import wraps
-from ldap3 import Server, Connection
 from flask import redirect, session
 
 def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'auth' not in session:
-            return redirect('/login')
-        return f(*args, **kwargs)
-    return decorated_function
+    pass
 
 def health_check():
 
   results = {}
 
   checks = {
-    'Docker' : lambda : docker.DockerClient(base_url='unix://var/run/docker.sock').info(),
+    'Docker' : lambda : 1 / 0, # Dividir por zero força exceção... DockerClient().info()
     'Gitea' : gitea_check,
     'Jenkins' : jenkins_check,
     'OpenLDAP' : openldap_check
@@ -31,22 +25,25 @@ def health_check():
     except Exception as ex:
       print(ex)
       results[i.lower()] = {'class' : 'error', 'message' : '{0}'.format(i)}
-      
+
   return results
 
 def gitea_check():
-  headers = {'Authorization' : 'token {}'.format(environ['GITEA_TOKEN'])}
-  response = requests.get('{}/api/v1/user'.format(environ['GITEA_HOST']), headers=headers, timeout=1, allow_redirects=False)
-  if response.status_code != 200:
+  # consultar /api/v1/user
+  # response = requests.get('example.com', timeout=1, allow_redirects=False)
+  if response.status_code != 200: # a conexão pode funcionar sem exceções, neste caso forçar uma
     raise Exception('Gitea: {} - {}'.format(response.status_code, response.reason))
+  raise Exception('Nada, apagar')
 
 def jenkins_check():
-  AUTH = (environ['JENKINS_USER'], environ['JENKINS_PASSWORD'])
-  JENKINS_HOST = '{}'.format(environ['JENKINS_HOST'])
-  response = requests.get('{}/overallLoad/api/json'.format(JENKINS_HOST), auth=AUTH, timeout=1)
-  if response.status_code != 200:
+  # consultar /overallLoad/api/json
+  # auth é uma tupla com usuário e senha
+  # response = requests.get('exemple.com', auth=None, timeout=1)
+  if response.status_code != 200: # a conexão pode funcionar sem exceções, neste caso forçar uma
     raise Exception('Jenkins: {} - {}'.format(response.status_code, response.reason))
+  raise Exception('Nada, apagar')
 
 def openldap_check():
-  server = Server(environ['LDAP_HOST'], use_ssl=False, connect_timeout=1) 
-  Connection(server, user=environ['LDAP_ADMIN'], password=environ['LDAP_PASSWORD'], auto_bind=True)
+  # server = Server('example.com', use_ssl=False, connect_timeout=1)
+  # conecte-se utilizando autobind
+  raise Exception('Nada, apagar')
