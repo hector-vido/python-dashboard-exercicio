@@ -20,10 +20,10 @@ def health_check():
   }
   for i in checks:
     try:
-      checks[i]()
-      results[i.lower()] = {'class' : 'success', 'message' : '{0}'.format(i)}
+      checks[i]() # As checagens são executadas aqui, por isso cada uma é uma função
+      results[i.lower()] = {'class' : 'success', 'message' : '{0}'.format(i)} # a classe afeta a cor no painel, verde ou vermelho
     except Exception as ex:
-      print(ex)
+      print(ex) # com este print, podemos ter uma ideia melhor dos erros na saída do terminal
       results[i.lower()] = {'class' : 'error', 'message' : '{0}'.format(i)}
 
   return results
@@ -47,3 +47,15 @@ def openldap_check():
   # server = Server('example.com', use_ssl=False, connect_timeout=1)
   # conecte-se utilizando autobind
   raise Exception('Nada, apagar')
+
+class LoggerHandler(logging.handlers.HTTPHandler):
+
+  def __init__(self, host, url, auth_host, method='GET', secure=False, credentials=None, context=None):
+    # chamar construtor da classe pai
+    self.auth_host = auth_host
+
+  def emit(self, record):
+    message = {'data' : record.asctime.split(',')[0], 'texto' : record.message}
+    # enviar um post para /auth com um json contento "user" e "password"
+    # extrair o token
+    # enviar o log para /insert com o token no cabeçalho "Authorization: Bearer <token>"

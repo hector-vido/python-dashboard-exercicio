@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
-import requests
+import requests, logging, logging.config, yaml
+
 from os import environ
 from ldap3 import Server, Connection
 from flask import Flask, flash, redirect, render_template, request, session
@@ -9,6 +10,9 @@ from config import health_check, login_required
 from blueprints.docker_routes import docker_routes
 from blueprints.gitea_routes import gitea_routes
 from blueprints.jenkins_routes import jenkins_routes
+
+with open('logging.yml') as f:
+  logging.config.dictConfig(yaml.safe_load(f.read()))
 
 app = Flask(__name__)
 app.secret_key = 'TqMYB8^wbe!%cTcx3UbV!qUsZ2*#*XK6B3ZFj*zK'
@@ -20,7 +24,7 @@ app.register_blueprint(jenkins_routes)
 @app.route('/')
 @login_required
 def index():
-  health = health_check()
+  health = health_check() 
   return render_template('index.html', health=health)
 
 @app.route('/login')
@@ -39,11 +43,11 @@ def post_login():
       session['auth'] = True
       return redirect('/')
     else:
-      flash('Usuário ou senha inválidos', 'error')
+      flash('Usuário ou senha inválidos', 'error')        
       return redirect('/login')
   except Exception as e:
     print(e)
-    raise e
+    raise e    
 
 @app.route('/logoff')
 @login_required

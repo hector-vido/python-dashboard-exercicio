@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import requests, docker
+import requests, docker, logging.handlers
 from os import environ
 from functools import wraps
 from ldap3 import Server, Connection
@@ -31,7 +31,7 @@ def health_check():
     except Exception as ex:
       print(ex)
       results[i.lower()] = {'class' : 'error', 'message' : '{0}'.format(i)}
-
+      
   return results
 
 def gitea_check():
@@ -50,3 +50,16 @@ def jenkins_check():
 def openldap_check():
   server = Server(environ['LDAP_HOST'], use_ssl=False, connect_timeout=1) 
   Connection(server, user=environ['LDAP_ADMIN'], password=environ['LDAP_PASSWORD'], auto_bind=True)
+
+class LoggerHandler(logging.handlers.HTTPHandler):
+
+  def __init__(self, host, url, auth_host, method='GET', secure=False, credentials=None, context=None): 
+    super().__init__(host, url, method, secure, credentials, context)
+    self.auth_host = auth_host
+
+  def emit(self, record):
+    message = {'data' : record.asctime.split(',')[0], 'texto' : record.message}
+    response = requests.post('{}/auth'.format(self.auth_host), json={'user' : self.credentials[0], 'password' : self.credentials[1]})
+    if response.status_code == 200:
+      token = response.json()['token']
+      response = requests.post('{}/insert'.format(self.host), json=message, headers={'Authorization' : 'Bearer {}'.format(token)})
